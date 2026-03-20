@@ -19,6 +19,7 @@ npm-debug.log*
 
 # SourceMod compiled plugins
 *.smx
+!packages/**/custom-plugins/*.smx
 
 # Secrets / credentials
 .env
