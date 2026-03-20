@@ -1,0 +1,15 @@
+services:
+  caddy:
+    image: docker.io/library/caddy:2
+    restart: unless-stopped
+    ports:
+      - "5443:5443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - registry
+
+  registry:
+    image: docker.io/library/registry:2
+    restart: unless-stopped

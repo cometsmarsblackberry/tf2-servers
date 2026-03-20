@@ -80,6 +80,7 @@ ENV STV_NAME="Source TV"
 ENV STV_TITLE="A Team Fortress 2 server Source TV"
 ENV STV_PASSWORD=
 ENV DOWNLOAD_URL="https://fastdl.serveme.tf/"
+ENV SM_ADMINS=
 
 WORKDIR $SERVER_DIR
 COPY entrypoint.sh .

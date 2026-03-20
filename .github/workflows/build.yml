@@ -1,6 +1,7 @@
 name: Build Docker images
 
 on:
+  workflow_dispatch: # Manual trigger
   schedule:
     - cron: "0 0 * * *" # At 00:00.
   push:
@@ -35,74 +36,33 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v5
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-base
             ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-base/i386
           tags: |
             type=sha,format=long
-            type=schedule,pattern=nightly
+            type=raw,value=nightly,enable={{is_default_branch}}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@v6
         with:
           context: ./packages/tf2-base
           file: ./packages/tf2-base/i386.Dockerfile
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          push: true
-          platforms: linux/amd64
-
-  tf2-base-amd64:
-    runs-on: ubuntu-latest
-    outputs:
-      tf2-base-amd64-tag: ${{ steps.docker_meta.outputs.version }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Docker meta
-        id: docker_meta
-        uses: docker/metadata-action@v6
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-base/amd64
-          tags: |
-            type=sha,format=long
-            type=schedule,pattern=nightly
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v4
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v7
-        with:
-          context: ./packages/tf2-base
-          file: ./packages/tf2-base/amd64.Dockerfile
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           push: true
@@ -120,33 +80,34 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v5
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-sourcemod
             ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-sourcemod/i386
           tags: |
             type=sha,format=long
-            type=schedule,pattern=nightly
+            type=raw,value=nightly,enable={{is_default_branch}}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@v6
         with:
           context: ./packages/tf2-sourcemod
           build-args: |
+            OWNER=${{ env.OWNER }}
             ARCH=i386
             TF2_BASE_TAG=${{ needs.tf2-base-i386.outputs.tf2-base-i386-tag }}
           tags: ${{ steps.docker_meta.outputs.tags }}
@@ -154,11 +115,11 @@ jobs:
           push: true
           platforms: linux/amd64
 
-  tf2-sourcemod-amd64:
+  tf2-plugins-base:
     runs-on: ubuntu-latest
-    needs: tf2-base-amd64
+    needs: tf2-sourcemod-i386
     outputs:
-      tf2-sourcemod-amd64-tag: ${{ steps.docker_meta.outputs.version }}
+      tf2-plugins-base-tag: ${{ steps.docker_meta.outputs.version }}
 
     steps:
       - name: Checkout
@@ -166,42 +127,87 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-sourcemod/amd64
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-plugins-base
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-plugins-base/i386
           tags: |
             type=sha,format=long
-            type=schedule,pattern=nightly
+            type=raw,value=nightly,enable={{is_default_branch}}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@v6
         with:
-          context: ./packages/tf2-sourcemod
+          context: ./packages/tf2-plugins-base
           build-args: |
-            ARCH=amd64
-            TF2_BASE_TAG=${{ needs.tf2-base-amd64.outputs.tf2-base-amd64-tag }}
+            OWNER=${{ env.OWNER }}
+            TF2_SOURCEMOD_TAG=${{ needs.tf2-sourcemod-i386.outputs.tf2-sourcemod-i386-tag }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           push: true
           platforms: linux/amd64
 
-  tf2-mge:
+  # tf2-mge:
+  #   runs-on: ubuntu-latest
+  #   needs: tf2-plugins-base
+  #
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+  #
+  #     - name: Docker meta
+  #       id: docker_meta
+  #       uses: docker/metadata-action@v5
+  #       with:
+  #         images: |
+  #           ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-mge
+  #           ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-mge/i386
+  #         tags: |
+  #           type=sha,format=long
+  #           type=raw,value=nightly,enable={{is_default_branch}}
+  #           type=semver,pattern={{version}}
+  #           type=semver,pattern={{major}}.{{minor}}
+  #           type=semver,pattern={{major}}
+  #
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
+  #
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v6
+  #       with:
+  #         context: ./packages/tf2-mge
+  #         build-args: |
+  #           OWNER=${{ env.OWNER }}
+  #           TF2_PLUGINS_BASE_TAG=${{ needs.tf2-plugins-base.outputs.tf2-plugins-base-tag }}
+  #         tags: ${{ steps.docker_meta.outputs.tags }}
+  #         labels: ${{ steps.docker_meta.outputs.labels }}
+  #         push: true
+  #         platforms: linux/amd64
+
+  tf2-summon:
     runs-on: ubuntu-latest
-    needs: tf2-sourcemod-i386
+    needs: tf2-plugins-base
 
     steps:
       - name: Checkout
@@ -209,121 +215,80 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-mge
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-mge/i386
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-summon
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-summon/i386
           tags: |
             type=sha,format=long
-            type=schedule,pattern=nightly
+            type=raw,value=nightly,enable={{is_default_branch}}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@v6
         with:
-          context: ./packages/tf2-mge
+          context: ./packages/tf2-summon
           build-args: |
-            TF2_SOURCEMOD_TAG=${{ needs.tf2-sourcemod-i386.outputs.tf2-sourcemod-i386-tag }}
+            OWNER=${{ env.OWNER }}
+            TF2_PLUGINS_BASE_TAG=${{ needs.tf2-plugins-base.outputs.tf2-plugins-base-tag }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           push: true
           platforms: linux/amd64
 
-  tf2-competitive:
-    runs-on: ubuntu-latest
-    needs: tf2-sourcemod-i386
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Docker meta
-        id: docker_meta
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-competitive
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-competitive/i386
-          tags: |
-            type=sha,format=long
-            type=schedule,pattern=nightly
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v4
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build
-        uses: docker/build-push-action@v7
-        with:
-          context: ./packages/tf2-competitive
-          build-args: |
-            TF2_SOURCEMOD_TAG=${{ needs.tf2-sourcemod-i386.outputs.tf2-sourcemod-i386-tag }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          push: true
-          platforms: linux/amd64
-
-  tf2-dm:
-    runs-on: ubuntu-latest
-    needs: tf2-sourcemod-i386
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Docker meta
-        id: docker_meta
-        uses: docker/metadata-action@v6
-        with:
-          images: |
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-dm
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-dm/i386
-          tags: |
-            type=sha,format=long
-            type=schedule,pattern=nightly
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v4
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v7
-        with:
-          context: ./packages/tf2-dm
-          build-args: |
-            TF2_SOURCEMOD_TAG=${{ needs.tf2-sourcemod-i386.outputs.tf2-sourcemod-i386-tag }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          push: true
-          platforms: linux/amd64
+  # tf2-standard:
+  #   runs-on: ubuntu-latest
+  #   needs: tf2-plugins-base
+  #
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+  #
+  #     - name: Docker meta
+  #       id: docker_meta
+  #       uses: docker/metadata-action@v5
+  #       with:
+  #         images: |
+  #           ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-standard
+  #           ${{ env.REGISTRY }}/${{ env.OWNER }}/tf2-standard/i386
+  #         tags: |
+  #           type=sha,format=long
+  #           type=raw,value=nightly,enable={{is_default_branch}}
+  #           type=semver,pattern={{version}}
+  #           type=semver,pattern={{major}}.{{minor}}
+  #           type=semver,pattern={{major}}
+  #
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
+  #
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v6
+  #       with:
+  #         context: ./packages/tf2-standard
+  #         build-args: |
+  #           OWNER=${{ env.OWNER }}
+  #           TF2_PLUGINS_BASE_TAG=${{ needs.tf2-plugins-base.outputs.tf2-plugins-base-tag }}
+  #         tags: ${{ steps.docker_meta.outputs.tags }}
+  #         labels: ${{ steps.docker_meta.outputs.labels }}
+  #         push: true
+  #         platforms: linux/amd64

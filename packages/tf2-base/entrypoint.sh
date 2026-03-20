@@ -1,5 +1,18 @@
 #!/bin/bash
 
+generate_admins() {
+  local admins_file="${SERVER_DIR}/tf/addons/sourcemod/configs/admins_simple.ini"
+  if [ -n "$SM_ADMINS" ]; then
+    mkdir -p "$(dirname "$admins_file")"
+    echo "// Generated from SM_ADMINS environment variable" > "$admins_file"
+    IFS=',' read -ra STEAM_IDS <<< "$SM_ADMINS"
+    for steam_id in "${STEAM_IDS[@]}"; do
+      steam_id=$(echo "$steam_id" | xargs)
+      [ -n "$steam_id" ] && echo "\"$steam_id\" \"99:z\"" >> "$admins_file"
+    done
+  fi
+}
+
 auto_envsubst() {
   local template_dir="${SERVER_DIR}/tf/cfg"
   local suffix=".template"
@@ -32,6 +45,7 @@ quit() {
 trap 'quit' SIGTERM
 
 auto_envsubst
+generate_admins
 
 # enablefakeip switch
 if [ "$ENABLE_FAKE_IP" = "1" ]; then

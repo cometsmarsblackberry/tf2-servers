@@ -1,48 +1,5 @@
 # Changelog
 
-## [3.9.20](https://github.com/melkortf/tf2-servers/compare/3.9.19...3.9.20) (2026-03-12)
-
-
-### Bug Fixes
-
-* **deps:** update ETF2L.org gameserver configs to version 1.0.25 ([#258](https://github.com/melkortf/tf2-servers/issues/258)) ([21196ce](https://github.com/melkortf/tf2-servers/commit/21196ceea1126ecebfba907bb1ace89530b56076))
-* **deps:** update SourceMod to version 1.12.0-git7223 ([#259](https://github.com/melkortf/tf2-servers/issues/259)) ([7751483](https://github.com/melkortf/tf2-servers/commit/7751483588a7009217c98c16a1cacb02e5e06d18))
-
-## [3.9.19](https://github.com/melkortf/tf2-servers/compare/3.9.18...3.9.19) (2026-03-11)
-
-
-### Bug Fixes
-
-* **tf2-base:** update tracked TF2 version to 10515055 ([c57273f](https://github.com/melkortf/tf2-servers/commit/c57273feb8f06d1b6e69dd7713f6dbdc8f2f86a1))
-
-## [3.9.18](https://github.com/melkortf/tf2-servers/compare/3.9.17...3.9.18) (2026-03-08)
-
-
-### Bug Fixes
-
-* **deps:** update TF2 Competitive Fixes to version 1.18.0 ([#257](https://github.com/melkortf/tf2-servers/issues/257)) ([0494d7c](https://github.com/melkortf/tf2-servers/commit/0494d7c48fecf0a592023178c8f489deeb13ff21))
-
-## [3.9.17](https://github.com/melkortf/tf2-servers/compare/3.9.16...3.9.17) (2026-03-07)
-
-
-### Bug Fixes
-
-* **tf2-competitive:** update srctvplus.so checksum ([7fff175](https://github.com/melkortf/tf2-servers/commit/7fff1750db10e11b2e4ff40d029caead5cd52997))
-
-## [3.9.16](https://github.com/melkortf/tf2-servers/compare/3.9.15...3.9.16) (2026-03-06)
-
-
-### Bug Fixes
-
-* **tf2-base:** update tracked TF2 version to 10500773 ([7316558](https://github.com/melkortf/tf2-servers/commit/73165586cbadbe3cc1ecd22efe2cc18f635a56df))
-
-## [3.9.15](https://github.com/melkortf/tf2-servers/compare/3.9.14...3.9.15) (2026-01-07)
-
-
-### Bug Fixes
-
-* **deps:** update TF2 Competitive Fixes to version 1.17.2 ([#252](https://github.com/melkortf/tf2-servers/issues/252)) ([f8b7dfc](https://github.com/melkortf/tf2-servers/commit/f8b7dfc44d734f6782a6216ef1ceb00659cf8f2f))
-
 ## [3.9.14](https://github.com/melkortf/tf2-servers/compare/3.9.13...3.9.14) (2025-12-24)
 
 

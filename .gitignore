@@ -1,0 +1,25 @@
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# AI tools
+.claude/
+.codex/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if applicable)
+node_modules/
+npm-debug.log*
+
+# SourceMod compiled plugins
+*.smx
+
+# Secrets / credentials
+.env
+.env.*
