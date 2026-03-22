@@ -58,20 +58,17 @@ ADD --checksum=sha256:${FBTF_CONFIGS_CHECKSUM} ${FBTF_CONFIGS_URL} .
 RUN unzip -q "${FBTF_CONFIGS_FILE_NAME}" \
   && cp fbtf_cfg/* "${PLUGIN_INSTALL_DIR}/cfg/"
 
-# RGL Configs + Plugins (temporarily disabled)
-# ARG RGL_CONFIGS_FILE_NAME=server-resources-updater.zip
-# ARG RGL_CONFIGS_VERSION=v256
-# ARG RGL_CONFIGS_URL=https://github.com/RGLgg/server-resources-updater/releases/download/${RGL_CONFIGS_VERSION}/${RGL_CONFIGS_FILE_NAME}
-# ARG RGL_CONFIGS_CHECKSUM=c0730a631e1b27a1d19ff94cb5ef06693990c755e543f20d53ae8aa30d4b4ba4
-# ADD --checksum=sha256:${RGL_CONFIGS_CHECKSUM} ${RGL_CONFIGS_URL} .
-# RUN unzip -q "${RGL_CONFIGS_FILE_NAME}" \
-#   && cp "cfg/"* "${PLUGIN_INSTALL_DIR}/cfg/" \
-#   && cp "addons/sourcemod/plugins/"{config_checker,rglqol}.smx "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/" \
-#   && cp "addons/sourcemod/scripting/"{config_checker,rglqol}.sp "${PLUGIN_INSTALL_DIR}/addons/sourcemod/scripting/" \
-#   && mkdir -p "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/disabled" \
-#   && cp "addons/sourcemod/plugins/disabled/"{p4sstime,tf2Halftime,roundtimer_override}.smx "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/disabled/" \
-#   && mkdir -p "${PLUGIN_INSTALL_DIR}/addons/sourcemod/scripting/disabled" \
-#   && cp "addons/sourcemod/scripting/disabled/roundtimer_override.sp" "${PLUGIN_INSTALL_DIR}/addons/sourcemod/scripting/disabled/"
+# RGL Configs + Plugins (all plugins disabled)
+ARG RGL_CONFIGS_FILE_NAME=server-resources-updater.zip
+ARG RGL_CONFIGS_VERSION=v365
+ARG RGL_CONFIGS_URL=https://github.com/RGLgg/server-resources-updater/releases/download/${RGL_CONFIGS_VERSION}/${RGL_CONFIGS_FILE_NAME}
+ARG RGL_CONFIGS_CHECKSUM=671e5a2c2b7432212f1ab9c73253de6383d1483cb12b30a45f1c08a3a418df8f
+ADD --checksum=sha256:${RGL_CONFIGS_CHECKSUM} ${RGL_CONFIGS_URL} .
+RUN unzip -q "${RGL_CONFIGS_FILE_NAME}" \
+  && cp "cfg/"* "${PLUGIN_INSTALL_DIR}/cfg/" \
+  && mkdir -p "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/disabled" \
+  && cp "addons/sourcemod/plugins/"{config_checker,rglqol,updater,demo_check_no_discord,rglupdater}.smx "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/disabled/" \
+  && cp "addons/sourcemod/plugins/disabled/"{p4sstime,roundtimer_override}.smx "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/disabled/"
 
 # ozfortress Configs (pinned to commit)
 ARG OZF_CONFIGS_COMMIT=382886415c25182885b4a05cfa056f9a643d4d38
