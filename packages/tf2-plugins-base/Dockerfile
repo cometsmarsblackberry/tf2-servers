@@ -105,9 +105,9 @@ ARG RELOADMAP_URL=https://raw.githubusercontent.com/WidovV/Reloadmap/${RELOADMAP
 ADD ${RELOADMAP_URL} "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/reloadmap.smx"
 
 # TF2-Simple-FOV (precompiled)
-ARG SIMPLE_FOV_COMMIT=main
-ARG SIMPLE_FOV_URL=https://raw.githubusercontent.com/CallMeBlad3z/TF2-Simple-FOV/${SIMPLE_FOV_COMMIT}/plugins/simple-fov.smx
-ADD ${SIMPLE_FOV_URL} "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/simple-fov.smx"
+# ARG SIMPLE_FOV_COMMIT=main
+# ARG SIMPLE_FOV_URL=https://raw.githubusercontent.com/CallMeBlad3z/TF2-Simple-FOV/${SIMPLE_FOV_COMMIT}/plugins/simple-fov.smx
+# ADD ${SIMPLE_FOV_URL} "${PLUGIN_INSTALL_DIR}/addons/sourcemod/plugins/simple-fov.smx"
 
 # ============================================================================
 # Stage 2: Compile source-only plugins
@@ -177,9 +177,9 @@ ADD https://raw.githubusercontent.com/sapphonie/gameservers/${SAPPHONIE_COMMIT}/
 ADD https://raw.githubusercontent.com/sapphonie/gameservers/${SAPPHONIE_COMMIT}/tf/addons/sourcemod/scripting/nospecmsg.sp /compile/scripting/nospecmsg.sp
 
 # PlayerAnalytics (source + gamedata)
-ARG PLAYERANALYTICS_COMMIT=master
-ADD https://raw.githubusercontent.com/sneak-it/PlayerAnalytics/${PLAYERANALYTICS_COMMIT}/scripting/player_analytics.sp /compile/scripting/player_analytics.sp
-ADD https://raw.githubusercontent.com/sneak-it/PlayerAnalytics/${PLAYERANALYTICS_COMMIT}/gamedata/detect_os.games.txt /compile/gamedata/detect_os.games.txt
+# ARG PLAYERANALYTICS_COMMIT=master
+# ADD https://raw.githubusercontent.com/sneak-it/PlayerAnalytics/${PLAYERANALYTICS_COMMIT}/scripting/player_analytics.sp /compile/scripting/player_analytics.sp
+# ADD https://raw.githubusercontent.com/sneak-it/PlayerAnalytics/${PLAYERANALYTICS_COMMIT}/gamedata/detect_os.games.txt /compile/gamedata/detect_os.games.txt
 
 # restartsoon (from sapphonie/gameservers)
 # syskill DISABLED - requires System2 which has upstream syntax incompatibility
@@ -192,8 +192,8 @@ ARG SPRAY_EXPLOIT_COMMIT=main
 ADD https://raw.githubusercontent.com/SilvDev/Spray_Exploit/${SPRAY_EXPLOIT_COMMIT}/scripting/spray_exploit_fixer.sp /compile/scripting/spray_exploit_fixer.sp
 
 # webshortcuts (from castaway-plugins)
-ARG CASTAWAY_COMMIT=master
-ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/webshortcuts.sp /compile/scripting/webshortcuts.sp
+# ARG CASTAWAY_COMMIT=master
+# ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/webshortcuts.sp /compile/scripting/webshortcuts.sp
 
 # arena-autoscramble (from castaway-plugins)
 ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/arena-autoscramble.sp /compile/scripting/arena-autoscramble.sp
