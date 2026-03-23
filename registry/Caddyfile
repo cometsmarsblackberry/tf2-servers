@@ -1,4 +1,0 @@
-registry.yourdomain.com:5443 {
-	tls /etc/letsencrypt/live/registry.yourdomain.com/fullchain.pem /etc/letsencrypt/live/registry.yourdomain.com/privkey.pem
-	reverse_proxy registry:5000
-}
