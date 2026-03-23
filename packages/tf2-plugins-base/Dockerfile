@@ -196,8 +196,8 @@ ADD https://raw.githubusercontent.com/SilvDev/Spray_Exploit/${SPRAY_EXPLOIT_COMM
 # ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/webshortcuts.sp /compile/scripting/webshortcuts.sp
 
 # arena-autoscramble (from castaway-plugins)
-ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/arena-autoscramble.sp /compile/scripting/arena-autoscramble.sp
-ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/include/scramble.inc /compile/scripting/include/scramble.inc
+# ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/arena-autoscramble.sp /compile/scripting/arena-autoscramble.sp
+# ADD https://raw.githubusercontent.com/rsedxcftvgyhbujnkiqwe/castaway-plugins/${CASTAWAY_COMMIT}/scripting/include/scramble.inc /compile/scripting/include/scramble.inc
 
 # Compile all source plugins
 RUN cd /compile/scripting \
