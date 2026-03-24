@@ -44,6 +44,15 @@ quit() {
 
 trap 'quit' SIGTERM
 
+generate_motd() {
+  if [ -n "$MOTD_URL" ]; then
+    local motd_file="${SERVER_DIR}/tf/cfg/motd.txt"
+    echo "$MOTD_URL" > "$motd_file"
+    export MOTD="cfg/motd.txt"
+  fi
+}
+
+generate_motd
 auto_envsubst
 generate_admins
 
