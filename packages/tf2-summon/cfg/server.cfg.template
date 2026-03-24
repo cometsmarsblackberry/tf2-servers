@@ -36,3 +36,6 @@ tv_delaymapchange 1
 logstf_apikey "${LOGS_TF_APIKEY}"
 sm_demostf_apikey "${DEMOS_TF_APIKEY}"
 recordstv_path "demos"
+
+motdfile "${MOTD}"
+motdfile_text "${MOTD_TEXT}"

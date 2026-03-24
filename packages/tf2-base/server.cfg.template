@@ -18,3 +18,6 @@ tv_title "${STV_TITLE}"
 tv_password "${STV_PASSWORD}"
 
 sv_quota_stringcmdspersecond 400
+
+motdfile "${MOTD}"
+motdfile_text "${MOTD_TEXT}"

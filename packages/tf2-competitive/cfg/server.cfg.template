@@ -20,6 +20,9 @@ tv_maxrate 0
 
 sv_quota_stringcmdspersecond 400
 
+motdfile "${MOTD}"
+motdfile_text "${MOTD_TEXT}"
+
 logstf_apikey "${LOGS_TF_APIKEY}"
 sm_demostf_apikey "${DEMOS_TF_APIKEY}"
 
